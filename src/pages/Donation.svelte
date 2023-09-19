@@ -5,23 +5,20 @@
     import Loader from '../components/Loader.svelte';
     export let params;
     let amount, name, email, agree = false;
+    let data = getCharity(params.id)
 
     async function getCharity(id) {
       let res = await fetch(`http://localhost:3000/charities/${id}`)
       return res.json()
     }
 
-    let data = getCharity(params.id)
-
-    
-    console.log('data', data)
-
     function handleButtonClick() {
       console.log('Button Click')
     }
 
     async function handleForm(event) {
-      data.pledged = data.pledged + parseInt(amount)
+      let chari = await getCharity(params.id)
+      chari.pledged = chari.pledged + parseInt(amount)
 
       try {
         const result = await fetch(`http://localhost:3000/charities/${params.id}`, {
@@ -29,7 +26,7 @@
         headers: {
           'content-type' : 'application/json'
         },
-        body : JSON.stringify(data)
+        body : JSON.stringify(chari)
       });
       router.redirect('/success')
       }
