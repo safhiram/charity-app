@@ -28,7 +28,20 @@
         },
         body : JSON.stringify(chari)
       });
-      router.redirect('/success')
+        const resMid = await fetch(`/.netlify/functions/payment`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: params.id,
+            amount: parseInt(amount),
+            name,
+            email
+          })
+        })
+      const dataMidtrans = await resMid.json()
+      window.location.href = dataMidtrans.url
       }
       catch (e){
         console.log(e)
