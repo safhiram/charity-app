@@ -33,7 +33,7 @@
 	afterUpdate(function() {
 		console.log('afterUpdate')
 	});
-
+	
 </script>
 
 <Header/>
