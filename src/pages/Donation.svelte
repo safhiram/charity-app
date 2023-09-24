@@ -1,27 +1,23 @@
 <script>
     import router from 'page';
+    import {params} from '../stores/pages'
+    import { charity, getCharity } from '../stores/data'
     import Header from "../components/Header.svelte";
     import Footer from "../components/Footer.svelte";
     import Loader from '../components/Loader.svelte';
-    export let params;
     let amount, name, email, agree = false;
-    let data = getCharity(params.id)
-
-    async function getCharity(id) {
-      let res = await fetch(`http://localhost:3000/charities/${id}`)
-      return res.json()
-    }
+    getCharity($params.id)
 
     function handleButtonClick() {
       console.log('Button Click')
     }
 
     async function handleForm(event) {
-      let chari = await getCharity(params.id)
+      let chari = await getCharity($params.id)
       chari.pledged = chari.pledged + parseInt(amount)
 
       try {
-        const result = await fetch(`http://localhost:3000/charities/${params.id}`, {
+        const result = await fetch(`http://localhost:3000/charities/${$params.id}`, {
         method: 'PUT',
         headers: {
           'content-type' : 'application/json'
@@ -34,7 +30,7 @@
             'content-type': 'application/json'
           },
           body: JSON.stringify({
-            id: params.id,
+            id: $params.id,
             amount: parseInt(amount),
             name,
             email
@@ -70,10 +66,10 @@
   <Header />
   <!-- welcome section -->
   <!--breadcumb start here-->
-  {#await data}
+  {#if !$charity}
   <Loader/>
     
-  {:then data}
+  {:else}
     <section
       class="xs-banner-inner-section parallax-window"
       style="background-image:url('/assets/images/backgrounds/kat-yukawa-K0E6E0a0R3A-unsplash.jpg')">
@@ -81,7 +77,7 @@
       <div class="container">
         <div class="color-white xs-inner-banner-content">
           <h2>Donate Now</h2>
-          <p>{data.title}</p>
+          <p>{$charity.title}</p>
           <ul class="xs-breadcumb">
             <li class="badge badge-pill badge-primary">
               <a href="/" class="color-white">Home /</a>
@@ -101,7 +97,7 @@
             <div class="col-lg-6">
               <div class="xs-donation-form-images">
                 <img
-                  src={data.thumbnail}
+                  src={$charity.thumbnail}
                   class="img-responsive"
                   alt="Family Images" />
               </div>
@@ -109,7 +105,7 @@
             <div class="col-lg-6">
               <div class="xs-donation-form-wraper">
                 <div class="xs-heading xs-mb-30">
-                  <h2 class="xs-title">{data.title}</h2>
+                  <h2 class="xs-title">{$charity.title}</h2>
                   <p class="small">
                     To learn more about make donate charity with us visit our "
                     <span class="color-green">Contact us</span>
@@ -195,6 +191,6 @@
       </section>
       <!-- End donation form section -->
     </main>
-  {/await}
+  {/if}
   
   <Footer />
