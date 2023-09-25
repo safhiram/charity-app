@@ -13,6 +13,7 @@
     }
 
     async function handleForm(event) {
+      agree = false
       let chari = await getCharity($params.id)
       chari.pledged = chari.pledged + parseInt(amount)
 
@@ -71,7 +72,7 @@
     
   {:else}
     <section
-      class="xs-banner-inner-section parallax-window"
+      class="xs-banner-inner-section"
       style="background-image:url('/assets/images/backgrounds/kat-yukawa-K0E6E0a0R3A-unsplash.jpg')">
       <div class="xs-black-overlay" />
       <div class="container">

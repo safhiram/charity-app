@@ -1,4 +1,5 @@
 <script>
+    import {fade, slide, fly} from 'svelte/transition';
     import Modal from "./Modal.svelte";
     import {charities} from '../stores/data'
     import Loader from "./Loader.svelte";
@@ -20,7 +21,7 @@
       });
     }
     function calculateDaysRemaining(date_end) {
-      const delta = date_end - new Date();
+      const delta = new Date(date_end) - new Date();
       const oneDay = 24 * 60 * 60 * 1000;
       return Math.round(Math.abs(delta / oneDay));
     }
@@ -67,7 +68,7 @@
       <!-- .row end -->
       <div class="row">
         {#each data as charity}
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6" in:fade={{delay: 1000}}>
             <!-- modal goes here -->
             <!-- Modal -->
             {#if isModalOpen === true}
@@ -153,8 +154,8 @@
                 <img width="500" src={charity.thumbnail} alt="" />
 
                 <div class="xs-skill-bar">
-                  <div class="xs-skill-track">
-                    <p>
+                  <div class="xs-skill-track" style="width:{calculateFunded(charity.pledged, charity.target)}%">
+                    <p in:fly="{{delay: 1500, x: -100}}" style="left:100%">
                       <span
                         class="number-percentage-count number-percentage"
                         data-value="90"
