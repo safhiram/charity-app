@@ -4,26 +4,30 @@ export const charities = writable([]);
 export const charity = writable({});
 
 export async function getCharities() {
-    let res = await fetch('http://localhost:3000/charities')
+    let res = await fetch('http://localhost:3001/charities',{
+        method: 'GET'
+    })
     const data = await res.json()
     
     if(res.ok){
-        charities.set(data)
+        charities.set(data.charities)
         return data
     } else {
-        throw new Error(data);
+        throw new Error(data.charities);
     }
 }
 
-export async function getCharity(id) {
-    let res = await fetch(`http://localhost:3000/charities/${id}`)
-    const data = await res.json()
-    if(res.ok){
+export function getCharity(id) {
+
+    let data;
+
+    charities.subscribe(function(value) {
+        data = value[id-1]
         charity.set(data)
-        return data
-    } else {
-        throw new Error(data);
-    }
+    })
+    return data
+    
+   
   }
 
 getCharities();

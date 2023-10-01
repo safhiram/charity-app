@@ -14,15 +14,16 @@
 
     async function handleForm(event) {
       agree = false
-      let chari = await getCharity($params.id)
+      let chari = getCharity($params.id)
       chari.pledged = chari.pledged + parseInt(amount)
 
       try {
-        const result = await fetch(`http://localhost:3000/charities/${$params.id}`, {
+        const result = await fetch(`http://localhost:3001/charities/${$params.id}`, {
         method: 'PUT',
         headers: {
-          'content-type' : 'application/json'
-        },
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          },
         body : JSON.stringify(chari)
       });
         const resMid = await fetch(`/.netlify/functions/payment`, {
