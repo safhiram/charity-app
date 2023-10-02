@@ -18,7 +18,7 @@
       chari.pledged = chari.pledged + parseInt(amount)
 
       try {
-        const result = await fetch(`http://localhost:3001/charities/${$params.id}`, {
+        const result = await fetch(`https://real-pear-barnacle-vest.cyclic.cloud/charities/${$params.id}`, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',

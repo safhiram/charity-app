@@ -4,7 +4,7 @@ export const charities = writable([]);
 export const charity = writable({});
 
 export async function getCharities() {
-    let res = await fetch('http://localhost:3001/charities',{
+    let res = await fetch('https://real-pear-barnacle-vest.cyclic.cloud/charities',{
         method: 'GET'
     })
     const data = await res.json()
